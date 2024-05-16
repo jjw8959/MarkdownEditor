@@ -8,22 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var filename = "Filename"
-    @State var showFileChooser = false
+    let fileVM = FileViewModel.shared
+    @State private var textString: String = ""
     
     var body: some View {
-        HStack {
-            Text(filename)
-            Button("select File") {
-                let panel = NSOpenPanel()
-                panel.allowsMultipleSelection = false
-                panel.canChooseDirectories = false
-                if panel.runModal() == .OK {
-                    self.filename = panel.url?.lastPathComponent ?? "<none>"
-                }
+        TextEditor(text: $textString)
+            .onChange(of: textString) {
+                fileVM.textString = self.textString
             }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
