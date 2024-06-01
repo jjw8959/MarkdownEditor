@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    let fileVM = FileViewModel.shared
-    @State private var textString: String = ""
+    @ObservedObject var fileVM = FileViewModel.shared
+    @State private var document: ReadMeDocument = ReadMeDocument(text: "")
     
     var body: some View {
-        TextEditor(text: $textString)
-            .onChange(of: textString) {
-                fileVM.textString = self.textString
-            }
+        TextEditor(text: $fileVM.textString)
     }
 }
 
