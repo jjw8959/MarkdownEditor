@@ -68,6 +68,7 @@ struct MarkdownEditorApp: App {
                         print(error.localizedDescription)
                     }
                 }
+                .keyboardShortcut(KeyEquivalent("o"), modifiers: .command)
                 //                    .fileImporter(isPresented: $saveBool, allowedContentTypes: [.folder]) { result in
                 //                        switch result {
                 //                        case .success(let url) :
