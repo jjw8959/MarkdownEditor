@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		091D7A372C0D9268008E44E9 /* ShowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091D7A362C0D9268008E44E9 /* ShowType.swift */; };
 		09654F612BEE1AB400FCBB05 /* FileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09654F602BEE1AB400FCBB05 /* FileViewModel.swift */; };
 		0999C5F42BEF44D300766F22 /* ReadMeDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0999C5F32BEF44D300766F22 /* ReadMeDocument.swift */; };
 		09F7666B2BECB876003F7423 /* MarkdownEditorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F7666A2BECB876003F7423 /* MarkdownEditorApp.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		091D7A362C0D9268008E44E9 /* ShowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowType.swift; sourceTree = "<group>"; };
 		09654F602BEE1AB400FCBB05 /* FileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileViewModel.swift; sourceTree = "<group>"; };
 		0999C5F32BEF44D300766F22 /* ReadMeDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadMeDocument.swift; sourceTree = "<group>"; };
 		09F766672BECB876003F7423 /* MarkdownEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarkdownEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +113,7 @@
 				09F7666A2BECB876003F7423 /* MarkdownEditorApp.swift */,
 				0999C5F52BEF44D700766F22 /* Model */,
 				09F7666C2BECB876003F7423 /* ContentView.swift */,
+				091D7A362C0D9268008E44E9 /* ShowType.swift */,
 				09F7666E2BECB876003F7423 /* Assets.xcassets */,
 				09F766702BECB876003F7423 /* MarkdownEditor.entitlements */,
 				09F766712BECB876003F7423 /* Preview Content */,
@@ -277,6 +280,7 @@
 				09F7666D2BECB876003F7423 /* ContentView.swift in Sources */,
 				09654F612BEE1AB400FCBB05 /* FileViewModel.swift in Sources */,
 				09F7666B2BECB876003F7423 /* MarkdownEditorApp.swift in Sources */,
+				091D7A372C0D9268008E44E9 /* ShowType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
