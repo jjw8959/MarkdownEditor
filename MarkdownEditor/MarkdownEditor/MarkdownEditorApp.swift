@@ -14,7 +14,10 @@ struct MarkdownEditorApp: App {
     @State private var openBool = false
     @State private var showType = 0 // 0 : EditorOnly , 1 : editor & preview, 2: PreviewOnly
     @State private var document: ReadMeDocument?
-    
+    @State private var isAlreadySaved = false
+    @State private var fileURL: URL?
+    @State private var title: String = "untitled"
+
     let fm = FileManager.default
     
     let fileVM = FileViewModel.shared
@@ -22,34 +25,45 @@ struct MarkdownEditorApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .navigationTitle(title)
         }
         .commands {
-            // 아래와 같이 새로운 CommandMenu를 만들 수 있다.
-            //            CommandMenu("My Top Menu") {
-            //                Button("Sub Menu Item") { print("You pressed sub menu.") }
-            //                    .keyboardShortcut("S")
-            //            }
-            
-            //혹은 아래처럼 CommandGroup을 Button들로 만든다음 before, after, replacing 파라미터에 맞춰서 마음대로 위치를 지정할 수 있다.
             CommandGroup(after: .newItem) {
                 Button("Save") {
                     document = ReadMeDocument(text: fileVM.textString)
-                    saveBool.toggle()
-                }
-                //                .keyboardShortcut("s")
-                .fileExporter(isPresented: $saveBool,
-                              document: document,
-                              contentType: .md,
-                              defaultFilename: "*")
-                { result in
-                    switch result {
-                    case .success(let url) :
-                        print(url)
-                    case .failure(let error) :
-                        print(error)
+                    if isAlreadySaved { // 덮어쓰기
+                        guard let url = fileURL else {
+                            return
+                        }
+                        do {
+                            try fileVM.textString.write(to: url, atomically: true, encoding: .utf8)
+                            self.fileURL = url
+                            title = url.lastPathComponent
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                        
+                    } else {    // 초기 저장
+                        saveFile()
                     }
                 }
                 .keyboardShortcut(KeyEquivalent("s"), modifiers: .command)
+                
+                Button("Save As") { saveBool.toggle() }
+                .fileExporter(isPresented: $saveBool,
+                                  document: document,
+                                  contentType: .md,
+                                  defaultFilename: "*")
+                    { result in
+                        switch result {
+                        case .success(let url) :
+                            title = url.lastPathComponent
+                            print(url)
+                        case .failure(let error) :
+                            print(error)
+                        }
+                }
+                .keyboardShortcut(KeyEquivalent("s"), modifiers: .command.union(.shift))
                 
                 Button("Open") {
                     openBool.toggle()
@@ -64,33 +78,12 @@ struct MarkdownEditorApp: App {
                             return
                         }
                         loadFileContent(from: url)
+                        title = url.lastPathComponent
                     case .failure(let error):
                         print(error.localizedDescription)
                     }
                 }
                 .keyboardShortcut(KeyEquivalent("o"), modifiers: .command)
-                //                    .fileImporter(isPresented: $saveBool, allowedContentTypes: [.folder]) { result in
-                //                        switch result {
-                //                        case .success(let url) :
-                ////                            let documentURL = fm.urls(for: .documentDirectory, in: .allDomainsMask)[0]
-                //                            NSSavePanel()
-                //
-                //                        case .failure(let error) :
-                //                            print("fail: ",error)
-                //
-                //                        }
-                //                    }
-                //                Button("Save As") { saveAsBool.toggle() }
-                //                    .fileImporter(isPresented: $saveAsBool, allowedContentTypes: [.folder]) { result in
-                //                        switch result {
-                //                        case .success(let url) :
-                //                            print("success: ",url)
-                //                        case .failure(let error) :
-                //                            print("fail: ",error)
-                //
-                //                        }
-                //                    }
-                //                    .keyboardShortcut(KeyEquivalent("s"), modifiers: .command.union(.shift))
             }
             
             CommandGroup(after: .sidebar) {
@@ -102,18 +95,18 @@ struct MarkdownEditorApp: App {
                     Button("Editor & Preview") {
                         
                     }
+                    
                     Button("Preview Only") {
                         
                     }
-                    
                 }
                 
             }
+            
         }
-        
     }
     
-    func loadFileContent(from url: URL) {
+    private func loadFileContent(from url: URL) {
         do {
             // 파일 URL에서 텍스트 읽기
             guard url.startAccessingSecurityScopedResource() else { return }
@@ -124,6 +117,31 @@ struct MarkdownEditorApp: App {
         } catch {
             print("파일 읽기 오류: \(error)")
             fileVM.textString = "파일을 읽을 수 없습니다."
+        }
+    }
+    
+    private func saveFile(/*content: String, url: URL*/) {
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [.md]
+        savePanel.canCreateDirectories = true
+        savePanel.isExtensionHidden = false
+//                        savePanel.title = "저장 위치를 선택하세요." // 타이틀바 내용
+//                        savePanel.message = "저장할 파일의 위치를 선택하세요."  // 타이틀바 바로 밑에 안에 창의 내용
+        savePanel.nameFieldStringValue = "blank"
+        
+        savePanel.begin { result in
+            if result == .OK {
+                guard let url = savePanel.url else { return }
+                isAlreadySaved.toggle()
+                do {
+                    try fileVM.textString.write(to: url, atomically: true, encoding: .utf8)
+                    fileURL = url
+                    title = url.lastPathComponent
+                    print(title)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
         }
     }
     
