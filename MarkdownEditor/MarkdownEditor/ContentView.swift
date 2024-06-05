@@ -9,7 +9,7 @@ import SwiftUI
 import MarkdownUI
 
 struct ContentView: View {
-    @State var showType: ShowType = .editPreview
+    @Binding var showType: ShowType
     
     var body: some View {
         Picker("", selection: $showType) {
@@ -55,6 +55,6 @@ struct MainContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    ContentView()
+//}
