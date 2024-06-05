@@ -91,17 +91,17 @@ struct MarkdownEditorApp: App {
                     Button("Editor Only") {
                         showType = .editor
                     }
-                    .keyboardShortcut("0", modifiers: .command)
+                    .keyboardShortcut("1", modifiers: .command)
                     
                     Button("Editor & Preview") {
                         showType = .editPreview
                     }
-                    .keyboardShortcut("-", modifiers: .command)
+                    .keyboardShortcut("2", modifiers: .command)
                     
                     Button("Preview Only") {
                         showType = .preview
                     }
-                    .keyboardShortcut("=", modifiers: .command)
+                    .keyboardShortcut("3", modifiers: .command)
                 }
                 
             }
