@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
+import MarkdownUI
 
 struct ContentView: View {
-//    @State private var document: ReadMeDocument = ReadMeDocument(text: "")
-//    @Binding var showType: ShowType
     @State var showType: ShowType = .editPreview
     
     var body: some View {
@@ -17,9 +16,6 @@ struct ContentView: View {
             ForEach(ShowType.allCases, id: \.self) { type in
                 Text(type.rawValue).tag(type)
             }
-//            Text(ShowType.rawValue).tag(ShowType.editor)
-//            Text("P").tag(ShowType.preview)
-//            Text("blue").tag(ShowType.editPreview)
         }
         .pickerStyle(.segmented)
         .padding()
@@ -35,23 +31,24 @@ struct MainContentView: View {
     
     var body: some View {
         switch showType {
+        
         case .editor:
             TextEditor(text: $fileVM.textString)
+            
         case .editPreview:
             GeometryReader { geometry in
                 HStack {
-                    
                     TextEditor(text: $fileVM.textString)
                         .frame(width: geometry.size.width / 2)
                     ScrollView {
-                        Text(fileVM.textString)
+                        Markdown(fileVM.textString)
                             .frame(maxWidth: geometry.size.width / 2, maxHeight: .infinity,alignment: .topLeading)
                     }
                 }
             }
         case .preview:
             ScrollView {
-                Text(fileVM.textString)
+                Markdown(fileVM.textString)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
         }
