@@ -6,16 +6,55 @@
 //
 
 import SwiftUI
+import MarkdownUI
 
 struct ContentView: View {
-    @ObservedObject var fileVM = FileViewModel.shared
-    @State private var document: ReadMeDocument = ReadMeDocument(text: "")
+    @Binding var showType: ShowType
     
     var body: some View {
-        TextEditor(text: $fileVM.textString)
+        Picker("", selection: $showType) {
+            ForEach(ShowType.allCases, id: \.self) { type in
+                Text(type.rawValue).tag(type)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding()
+        
+        MainContentView(showType: $showType)
     }
 }
 
-#Preview {
-    ContentView()
+struct MainContentView: View {
+    @ObservedObject var fileVM = FileViewModel.shared
+    
+    @Binding var showType: ShowType
+    
+    var body: some View {
+        switch showType {
+        
+        case .editor:
+            TextEditor(text: $fileVM.textString)
+            
+        case .editPreview:
+            GeometryReader { geometry in
+                HStack {
+                    TextEditor(text: $fileVM.textString)
+                        .frame(width: geometry.size.width / 2)
+                    ScrollView {
+                        Markdown(fileVM.textString)
+                            .frame(maxWidth: geometry.size.width / 2, maxHeight: .infinity,alignment: .topLeading)
+                    }
+                }
+            }
+        case .preview:
+            ScrollView {
+                Markdown(fileVM.textString)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            }
+        }
+    }
 }
+
+//#Preview {
+//    ContentView()
+//}

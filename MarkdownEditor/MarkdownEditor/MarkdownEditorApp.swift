@@ -12,11 +12,11 @@ struct MarkdownEditorApp: App {
     @State private var saveBool = false
     @State private var saveAsBool = false
     @State private var openBool = false
-    @State private var showType = 0 // 0 : EditorOnly , 1 : editor & preview, 2: PreviewOnly
     @State private var document: ReadMeDocument?
     @State private var isAlreadySaved = false
     @State private var fileURL: URL?
     @State private var title: String = "untitled"
+    @State private var showType: ShowType = .editor
 
     let fm = FileManager.default
     
@@ -24,7 +24,7 @@ struct MarkdownEditorApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(showType: $showType)
                 .navigationTitle(title)
         }
         .commands {
@@ -89,16 +89,19 @@ struct MarkdownEditorApp: App {
             CommandGroup(after: .sidebar) {
                 Menu("Show Type") {
                     Button("Editor Only") {
-                        
+                        showType = .editor
                     }
+                    .keyboardShortcut("0", modifiers: .command)
                     
                     Button("Editor & Preview") {
-                        
+                        showType = .editPreview
                     }
+                    .keyboardShortcut("-", modifiers: .command)
                     
                     Button("Preview Only") {
-                        
+                        showType = .preview
                     }
+                    .keyboardShortcut("=", modifiers: .command)
                 }
                 
             }
