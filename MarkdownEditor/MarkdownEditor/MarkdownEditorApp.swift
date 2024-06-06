@@ -16,7 +16,7 @@ struct MarkdownEditorApp: App {
     @State private var isAlreadySaved = false
     @State private var fileURL: URL?
     @State private var title: String = "untitled"
-    @State private var showType: ShowType = .editor
+    @State private var showType: ShowType = .editPreview
 
     let fm = FileManager.default
     
