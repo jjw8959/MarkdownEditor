@@ -50,18 +50,18 @@ struct MarkdownEditorApp: App {
                 .keyboardShortcut(KeyEquivalent("s"), modifiers: .command)
                 
                 Button("Save As") { saveBool.toggle() }
-                .fileExporter(isPresented: $saveBool,
+                    .fileExporter(isPresented: $saveBool,
                                   document: document,
                                   contentType: .md,
                                   defaultFilename: "*")
-                    { result in
-                        switch result {
-                        case .success(let url) :
-                            title = url.lastPathComponent
-                            print(url)
-                        case .failure(let error) :
-                            print(error)
-                        }
+                { result in
+                    switch result {
+                    case .success(let url) :
+                        title = url.lastPathComponent
+                        print(url)
+                    case .failure(let error) :
+                        print(error)
+                    }
                 }
                 .keyboardShortcut(KeyEquivalent("s"), modifiers: .command.union(.shift))
                 
@@ -85,25 +85,21 @@ struct MarkdownEditorApp: App {
                 }
                 .keyboardShortcut(KeyEquivalent("o"), modifiers: .command)
             }
-            
-            CommandGroup(after: .sidebar) {
-                Menu("Show Type") {
-                    Button("Editor Only") {
-                        showType = .editor
-                    }
-                    .keyboardShortcut("1", modifiers: .command)
-                    
-                    Button("Editor & Preview") {
-                        showType = .editPreview
-                    }
-                    .keyboardShortcut("2", modifiers: .command)
-                    
-                    Button("Preview Only") {
-                        showType = .preview
-                    }
-                    .keyboardShortcut("3", modifiers: .command)
+            CommandMenu("View") {
+                Button("Editor Only") {
+                    showType = .editor
                 }
+                .keyboardShortcut("1", modifiers: .command)
                 
+                Button("Editor & Preview") {
+                    showType = .editPreview
+                }
+                .keyboardShortcut("2", modifiers: .command)
+                
+                Button("Preview Only") {
+                    showType = .preview
+                }
+                .keyboardShortcut("3", modifiers: .command)
             }
             
         }
@@ -123,13 +119,13 @@ struct MarkdownEditorApp: App {
         }
     }
     
-    private func saveFile(/*content: String, url: URL*/) {
+    private func saveFile() {
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.md]
         savePanel.canCreateDirectories = true
         savePanel.isExtensionHidden = false
-//                        savePanel.title = "저장 위치를 선택하세요." // 타이틀바 내용
-//                        savePanel.message = "저장할 파일의 위치를 선택하세요."  // 타이틀바 바로 밑에 안에 창의 내용
+//      savePanel.title = "저장 위치를 선택하세요." // 타이틀바 내용
+//      savePanel.message = "저장할 파일의 위치를 선택하세요."  // 타이틀바 바로 밑에 안에 창의 내용
         savePanel.nameFieldStringValue = "blank"
         
         savePanel.begin { result in
