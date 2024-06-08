@@ -4,6 +4,11 @@
 macOS 전용으로 만들어진 마크다운 에디터 앱입니다.
 실시간으로 프리뷰를 같이 보면서 쓸 수 있는 경량화된 마크다운 에디터를 직접 만들어보고 싶었습니다.
 
+## 설치방법
+1. 파일 다운로드 [MarkdownEditor.app.zip](https://github.com/jjw8959/MarkdownEditor/releases/download/v1.0.0/MarkdownEditor.app.zip)
+2. 압축해제
+3. MarkdownEditor.app을 응용프로그램 폴더로 이동
+
 ## 개발환경
 - xcode 15.4
 - macOS Sonoma 14.5
