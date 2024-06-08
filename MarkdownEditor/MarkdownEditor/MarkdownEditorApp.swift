@@ -58,6 +58,7 @@ struct MarkdownEditorApp: App {
                     switch result {
                     case .success(let url) :
                         title = url.lastPathComponent
+                        self.fileURL = url
                         print(url)
                     case .failure(let error) :
                         print(error)
