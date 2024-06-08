@@ -85,7 +85,7 @@ struct MarkdownEditorApp: App {
                 }
                 .keyboardShortcut(KeyEquivalent("o"), modifiers: .command)
             }
-            CommandMenu("View") {
+            CommandGroup(after: .sidebar) {
                 Button("Editor Only") {
                     showType = .editor
                 }

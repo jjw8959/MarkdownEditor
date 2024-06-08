@@ -34,11 +34,13 @@ struct MainContentView: View {
         
         case .editor:
             TextEditor(text: $fileVM.textString)
+                .font(.title2)
             
         case .editPreview:
             GeometryReader { geometry in
                 HStack {
                     TextEditor(text: $fileVM.textString)
+                        .font(.title2)
                         .frame(width: geometry.size.width / 2)
                     ScrollView {
                         Markdown(fileVM.textString)
