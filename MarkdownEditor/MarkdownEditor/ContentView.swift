@@ -12,13 +12,14 @@ struct ContentView: View {
     @Binding var showType: ShowType
     
     var body: some View {
-        Picker("", selection: $showType) {
+        Picker("View Type", selection: $showType) {
             ForEach(ShowType.allCases, id: \.self) { type in
                 Text(type.rawValue).tag(type)
             }
         }
         .pickerStyle(.segmented)
-        .padding()
+        .padding([.top, .leading, .trailing], 8)
+        .padding(.bottom, 1)
         
         MainContentView(showType: $showType)
     }
@@ -45,6 +46,7 @@ struct MainContentView: View {
                     ScrollView {
                         Markdown(fileVM.textString)
                             .frame(maxWidth: geometry.size.width / 2, maxHeight: .infinity,alignment: .topLeading)
+                            .padding([.leading, .trailing], 3)
                     }
                 }
             }
@@ -52,6 +54,7 @@ struct MainContentView: View {
             ScrollView {
                 Markdown(fileVM.textString)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .padding([.leading, .trailing], 5)
             }
         }
     }
